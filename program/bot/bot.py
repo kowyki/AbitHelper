@@ -1,7 +1,7 @@
 import os
 from telebot import TeleBot
 from dotenv import load_dotenv
-from .handlers.main_message_handlers import *
+from handlers.main_message_handlers import *
 
 # Включение бота
 def init_bot():

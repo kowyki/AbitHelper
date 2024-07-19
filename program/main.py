@@ -28,7 +28,7 @@ def start_program():
     print('\nПарсинг завершён')    
 
     while True:
-        ans = input(clr.Fore.RESET + '\n1. Подробная информация\n2. Краткая информация\n3. Посмотреть списки\n4. Импорт в JSON\n* ')
+        ans = input(clr.Fore.RESET + '\n1. Подробная информация\n2. Краткая информация\n3. Посмотреть списки\n4. Импорт в JSON\n5. Поиск по номеру\n* ')
         match ans:
             case '1':
                 if 'score' not in locals(): score = int(input('Введите ваш балл (ЕГЭ+ИД): '))
@@ -127,5 +127,38 @@ def start_program():
                         saves_names[save_num][1].save()
                 print(f'{clr.Fore.GREEN}Успешно сохранено{clr.Fore.RESET}')
                 # except: print(f'{clr.Fore.RED}Произошла ошибка{clr.Fore.RESET}')
+            
+            case '5':
+                number = input('Введите номеро вашего СНИЛСа или личного дела: ')
+                if number not in abits_data: print('Неверный номер или вы не подавали документы')
+                abit_data = abits_data[number]
+                for group_name, group in groups_data.items():
+                    i = 1
+                    for category_name, category in group.items():
+                        for abit_number, abit in category.items():
+                            if abit_number == number:
+                                abit_data['КГ'][group_name]['Место в списке'] = i
+                            i += 1
+                            
+                for param_name, param in abit_data.items():
+                    if param_name != 'КГ': print(f'{param_name}: {param}')
+                for group_name, group in abit_data['КГ'].items():
+                    print(f'  Информация в рамках конкурсной группы: {group_name}')
+                    [print(f'    {param_name}: {param}') for param_name, param in group.items()]       
+                            
+                list_res = None
+                for group_name, group in main_list.items():
+                    i = 1
+                    for category_name, category in group.items():
+                        for abit in category:
+                            if abit['Номер'] == number:
+                                list_res = {'Конкурсная группа': group_name, 
+                                            'Категория': category_name,
+                                            'Место в списке': f'{i}/{groups_main_data[group_name]["КЦП"]}'}
+                            i += 1
+                if list_res is None: print('По результатам составленных списков вы не прошли')
+                else: 
+                    print(f'\nАбитуриент {number} прошёл конкурс')
+                    [print(f'{param_name}: {param}') for param_name, param in list_res.items()]
                 
             case _: return

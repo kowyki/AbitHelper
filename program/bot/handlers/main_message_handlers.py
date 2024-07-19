@@ -1,15 +1,13 @@
 from telebot import TeleBot
 from telebot.types import Message
 
-from ..utils.data_handlers import *
-from ..utils.main_data import *
-
-global groups_main_data, groups_data, abits_data, main_list, summary_data, last_time
+from utils.data_handlers import *
 
 def commands_handler(message: Message, bot: TeleBot):
     if 'last_time' not in globals():
         msg = bot.send_message(message.from_user.id, 'Парсинг данных с сайта...')
         reload_data(message, bot, msg.message_id)
+            
         bot.send_message(message.from_user.id, 'Парсинг завершён', reply_markup=main_markup)
 
     else:
@@ -38,7 +36,9 @@ def buttons_handler(message: Message, bot: TeleBot):
         
         case '🔄 Обновить данные':
             msg = bot.send_message(message.from_user.id, 'Парсинг данных с сайта...')
+
             reload_data(message, bot, msg.message_id)
+            
             bot.send_message(message.from_user.id, 'Парсинг завершён', reply_markup=main_markup)
 
             
