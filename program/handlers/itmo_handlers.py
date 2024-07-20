@@ -1,7 +1,12 @@
-import requests, json, re
+import requests, json, re, sqlite3
 from bs4 import BeautifulSoup as BS
 
 from ..classes import *
+
+
+    
+    
+    
 
 # Обработчик класса groups
 def groups_handler(groups_list_data):
